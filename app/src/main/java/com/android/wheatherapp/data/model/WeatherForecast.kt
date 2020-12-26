@@ -6,7 +6,7 @@ import android.os.Parcelable
 /**
  * Created by Abhishek.s on 26,December,2020
  */
-data class WeatherPredictions (
+data class WeatherForecast (
     var cod: String? = null,
     var message: Int = 0,
     var cnt: Int = 0,
@@ -34,12 +34,12 @@ data class WeatherPredictions (
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<WeatherPredictions> {
-        override fun createFromParcel(parcel: Parcel): WeatherPredictions {
-            return WeatherPredictions(parcel)
+    companion object CREATOR : Parcelable.Creator<WeatherForecast> {
+        override fun createFromParcel(parcel: Parcel): WeatherForecast {
+            return WeatherForecast(parcel)
         }
 
-        override fun newArray(size: Int): Array<WeatherPredictions?> {
+        override fun newArray(size: Int): Array<WeatherForecast?> {
             return arrayOfNulls(size)
         }
     }
