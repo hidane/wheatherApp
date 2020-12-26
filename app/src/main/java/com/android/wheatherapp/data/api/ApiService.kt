@@ -13,14 +13,14 @@ interface ApiService {
     @GET("weather?")
     suspend fun getWeatherMeta(
         @Query(value = "lat", encoded = true) lat: String?,
-        @Query(value = "lan", encoded = true) lan: String?,
+        @Query(value = "lon", encoded = true) lan: String?,
         @Query(value = "appid", encoded = true) apiKey: String?
     ): WeatherMeta
 
     @GET("forecast?")
     suspend fun getForecast(
         @Query(value = "lat", encoded = true) lat: String?,
-        @Query(value = "lan", encoded = true) lan: String?,
+        @Query(value = "lon", encoded = true) lan: String?,
         @Query(value = "appid", encoded = true) apiKey: String?,
         @Query(value = "units", encoded = true) units: String?
     ): WeatherForecast

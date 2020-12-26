@@ -1,31 +1,67 @@
 package com.android.wheatherapp.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.android.wheatherapp.BuildConfig
 import com.android.wheatherapp.R
+import com.android.wheatherapp.data.api.ApiHelperImpl
+import com.android.wheatherapp.data.api.RetrofitBuilder
+import com.android.wheatherapp.utils.Status
+import com.android.wheatherapp.utils.ViewModelFactory
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProvider(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_settings, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupViewModel()
+        setupObserver()
+
+        viewModel.fetchWeatherMeta("0.0","0.0", BuildConfig.WEATHER_KEY)
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProviders.of(
+            this,
+            ViewModelFactory(
+                ApiHelperImpl(RetrofitBuilder.apiService),
+            )
+        ).get(HomeViewModel::class.java)
+    }
+
+    private fun setupObserver() {
+        activity?.let {
+            viewModel.getWeatherMeta().observe(it, Observer {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        Log.e("Weather Fetched", it.data.toString())
+                    }
+                    Status.LOADING -> {
+                        Log.e("Weather Fetched", "Service call Loading")
+                    }
+                    Status.ERROR -> {
+                        //Handle Error
+                        Toast.makeText(activity, it.message.toString(), Toast.LENGTH_LONG).show()
+                    }
+                }
+            })
+        }
     }
 }

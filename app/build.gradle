@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+def apikeyPropertiesFile = rootProject.file("apikeys.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 29
     buildToolsVersion "30.0.2"
@@ -13,6 +17,9 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
+        buildConfigField("String", "WEATHER_KEY", apikeyProperties['WHEATHER_API_KEY'])
+        buildConfigField("String", "MAP_KEY", apikeyProperties['MAPS_API_KEY'])
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
