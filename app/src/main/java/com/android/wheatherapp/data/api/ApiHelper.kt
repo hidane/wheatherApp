@@ -7,5 +7,5 @@ interface ApiHelper {
 
     suspend fun getWeatherMeta(lat:String?, lon: String?, apiKey: String?): WeatherMeta
 
-    suspend fun getMoreUsers(lat:String?, lon: String?, apiKey: String?, unit: String?): WeatherForecast
+    suspend fun getWeatherForecast(lat:String?, lon: String?, apiKey: String?, unit: String?): WeatherForecast
 }

@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import com.android.wheatherapp.BuildConfig
 import com.android.wheatherapp.R
 import com.android.wheatherapp.data.api.ApiHelperImpl
 import com.android.wheatherapp.data.api.RetrofitBuilder
 import com.android.wheatherapp.utils.Status
 import com.android.wheatherapp.utils.ViewModelFactory
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
@@ -30,6 +32,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        text_home.setOnClickListener(this)
+
         setupViewModel()
         setupObserver()
         viewModel.fetchWeatherMeta("0.0", "0.0", BuildConfig.WEATHER_KEY)
@@ -37,6 +41,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0) {
+            text_home -> {
+                p0?.let { Navigation.findNavController(it).navigate(R.id.homeToCity) }
+            }
         }
     }
 

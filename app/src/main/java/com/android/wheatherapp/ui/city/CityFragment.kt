@@ -1,14 +1,24 @@
 package com.android.wheatherapp.ui.city
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import com.android.wheatherapp.BuildConfig
 import com.android.wheatherapp.R
+import com.android.wheatherapp.data.api.ApiHelperImpl
+import com.android.wheatherapp.data.api.RetrofitBuilder
+import com.android.wheatherapp.utils.Status
+import com.android.wheatherapp.utils.ViewModelFactory
 
 
 class CityFragment : Fragment() {
+
+    private lateinit var cityViewModel: CityViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -21,7 +31,36 @@ class CityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.actionBar?.title = "Pune"
+        setupViewModel()
+        setupObserver()
+        cityViewModel.fetchWeatherForecast("0.0", "0.0", BuildConfig.WEATHER_KEY, "metric")
+    }
 
+    private fun setupViewModel() {
+        cityViewModel = ViewModelProviders.of(
+                this,
+                ViewModelFactory(
+                        ApiHelperImpl(RetrofitBuilder.apiService),
+                )
+        ).get(CityViewModel::class.java)
+    }
+
+    private fun setupObserver() {
+        activity?.let {
+            cityViewModel.getWeatherForecast().observe(it, {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        Log.e("Weather Forecast Fetched", it.data.toString())
+                    }
+                    Status.LOADING -> {
+                        Log.e("Weather Forecast Fetched", "Service call Loading")
+                    }
+                    Status.ERROR -> {
+                        //Handle Error
+                        Toast.makeText(activity, it.message.toString(), Toast.LENGTH_LONG).show()
+                    }
+                }
+            })
+        }
     }
 }
