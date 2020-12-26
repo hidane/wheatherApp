@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.android.wheatherapp.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/homeToCity"
+            app:destination="@id/cityFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
@@ -22,4 +26,11 @@
         android:name="com.android.wheatherapp.ui.help.HelpFragment"
         android:label="@string/title_help"
         tools:layout="@layout/fragment_help" />
+
+    <fragment
+        android:id="@+id/cityFragment"
+        android:name="com.android.wheatherapp.ui.city.CityFragment"
+        android:label="City"
+        tools:layout="@layout/fragment_city" />
+
 </navigation>
