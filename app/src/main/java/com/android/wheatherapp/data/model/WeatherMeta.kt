@@ -15,9 +15,9 @@ data class WeatherMeta(
     var visibility: Int = 0,
     var wind: Wind? = null,
     var clouds: Clouds? = null,
-    var dt: Int = 0,
+    var dt: Long = 0,
     var sys: Sys? = null,
-    var timezone: Int = 0,
+    var timezone: Long = 0,
     var id: Int = 0,
     var name: String? = null,
     var cod: Int = 0,
@@ -31,9 +31,9 @@ data class WeatherMeta(
         parcel.readInt(),
         parcel.readParcelable(Wind::class.java.classLoader),
         parcel.readParcelable(Clouds::class.java.classLoader),
-        parcel.readInt(),
+        parcel.readLong(),
         parcel.readParcelable(Sys::class.java.classLoader),
-        parcel.readInt(),
+        parcel.readLong(),
         parcel.readInt(),
         parcel.readString(),
         parcel.readInt(),
@@ -49,9 +49,9 @@ data class WeatherMeta(
         parcel.writeInt(visibility)
         parcel.writeParcelable(wind, flags)
         parcel.writeParcelable(clouds, flags)
-        parcel.writeInt(dt)
+        parcel.writeLong(dt)
         parcel.writeParcelable(sys, flags)
-        parcel.writeInt(timezone)
+        parcel.writeLong(timezone)
         parcel.writeInt(id)
         parcel.writeString(name)
         parcel.writeInt(cod)
