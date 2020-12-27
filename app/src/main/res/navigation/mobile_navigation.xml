@@ -13,6 +13,9 @@
         <action
             android:id="@+id/homeToCity"
             app:destination="@id/cityFragment" />
+        <action
+            android:id="@+id/homeToMap"
+            app:destination="@id/mapsFragment" />
     </fragment>
 
     <fragment
@@ -32,5 +35,10 @@
         android:name="com.android.wheatherapp.ui.city.CityFragment"
         android:label="City"
         tools:layout="@layout/fragment_city" />
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.android.wheatherapp.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
 
 </navigation>
