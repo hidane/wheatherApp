@@ -14,7 +14,8 @@ interface ApiService {
     suspend fun getWeatherMeta(
         @Query(value = "lat", encoded = true) lat: String?,
         @Query(value = "lon", encoded = true) lan: String?,
-        @Query(value = "appid", encoded = true) apiKey: String?
+        @Query(value = "appid", encoded = true) apiKey: String?,
+        @Query(value = "units", encoded = true) units: String?
     ): WeatherMeta
 
     @GET("forecast?")

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.wheatherapp.BuildConfig
@@ -20,6 +21,7 @@ import com.android.wheatherapp.data.local.enitity.BookmarkedCity
 import com.android.wheatherapp.data.model.WeatherForecast
 import com.android.wheatherapp.ui.city.adapter.CityForecastAdapter
 import com.android.wheatherapp.utils.Status
+import com.android.wheatherapp.utils.UnitSystem
 import com.android.wheatherapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_city.*
 
@@ -30,6 +32,7 @@ class CityFragment : Fragment() {
 
     private var cityForecastAdapter: CityForecastAdapter? = null
     private var bookmarkedCity: BookmarkedCity? = null
+    private lateinit var unit: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,9 +49,22 @@ class CityFragment : Fragment() {
         setupObserver()
         setupRecycler()
 
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+
+        unit = if (sharedPreferences.getBoolean("unit", true)) {
+            UnitSystem.METRIC.name
+        } else {
+            UnitSystem.IMPERIAL.name
+        }
+
         bookmarkedCity = arguments?.getParcelable<BookmarkedCity>("city")
 
-        cityViewModel.fetchWeatherForecast(bookmarkedCity?.lat.toString(), bookmarkedCity?.lon.toString(), BuildConfig.WEATHER_KEY, "metric")
+        cityViewModel.fetchWeatherForecast(
+            bookmarkedCity?.lat.toString(),
+            bookmarkedCity?.lon.toString(),
+            BuildConfig.WEATHER_KEY,
+            unit
+        )
     }
 
     private fun setupRecycler() {

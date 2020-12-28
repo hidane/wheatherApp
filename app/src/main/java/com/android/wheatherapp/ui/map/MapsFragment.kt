@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import com.android.wheatherapp.BuildConfig
 import com.android.wheatherapp.R
 import com.android.wheatherapp.data.api.ApiHelperImpl
@@ -16,6 +17,7 @@ import com.android.wheatherapp.data.local.DatabaseBuilder
 import com.android.wheatherapp.data.local.DatabaseHelperImpl
 import com.android.wheatherapp.ui.home.HomeViewModel
 import com.android.wheatherapp.utils.Status
+import com.android.wheatherapp.utils.UnitSystem
 import com.android.wheatherapp.utils.ViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,6 +35,7 @@ class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragLis
     val marker = MarkerOptions().position(defaultCity).draggable(true).title("Pune")
     private lateinit var viewModel: HomeViewModel
     private lateinit var latLng: LatLng
+    private lateinit var unit: String
 
     private val callback = OnMapReadyCallback { googleMap ->
         googleMap.addMarker(marker)
@@ -57,6 +60,14 @@ class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragLis
         mapFragment?.getMapAsync(callback)
         setupViewModel()
         setupObserver()
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+
+        unit = if (sharedPreferences.getBoolean("unit", true)) {
+            UnitSystem.METRIC.name
+        } else {
+            UnitSystem.IMPERIAL.name
+        }
 
         btn_add_city.setOnClickListener(this)
     }
@@ -119,7 +130,8 @@ class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragLis
                 viewModel.addNewCity(
                     latLng.latitude.toString(),
                     latLng.longitude.toString(),
-                    BuildConfig.WEATHER_KEY
+                    BuildConfig.WEATHER_KEY,
+                    unit
                 )
             }
         }

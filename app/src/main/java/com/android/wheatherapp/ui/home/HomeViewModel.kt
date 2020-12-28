@@ -16,11 +16,11 @@ class HomeViewModel(
 
     private val bookmarkCities = MutableLiveData<Resource<List<BookmarkedCity>>>()
 
-    fun addNewCity(lat: String?, lon: String?, apiKey: String?) {
+    fun addNewCity(lat: String?, lon: String?, apiKey: String?, unit: String?) {
         viewModelScope.launch {
             bookmarkCities.postValue(Resource.loading(null))
             try {
-                val weatherMetaApi = apiHelper.getWeatherMeta(lat, lon, apiKey)
+                val weatherMetaApi = apiHelper.getWeatherMeta(lat, lon, apiKey, unit)
                 val bookmarkedCities = mutableListOf<BookmarkedCity>()
                 bookmarkedCities.addAll(databaseHelper.getBookmarkedCities())
 
