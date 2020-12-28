@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -54,7 +55,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
         rvBookmarked.adapter = bookmarkCityAdapter
 
         bookmarkCityAdapter?.onItemClick = {
-            view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.homeToCity) }
+
+            val bundle = bundleOf("city" to it)
+            view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.homeToCity, bundle) }
         }
 
         bookmarkCityAdapter?.onDeleteItemClick = {

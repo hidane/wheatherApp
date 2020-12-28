@@ -5,8 +5,11 @@
     <dimen name="card_padding">16dp</dimen>
     <dimen name="padding_10">10dp</dimen>
     <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
     <dimen name="card_radius">8dp</dimen>
     <dimen name="card_elevation">8dp</dimen>
     <dimen name="item_spacing">15dp</dimen>
     <dimen name="card_size">120dp</dimen>
+    <dimen name="bottom_margin">56dp</dimen>
+    <dimen name="card_width">130dp</dimen>
 </resources>

@@ -11,4 +11,8 @@
     <string name="background_image">Background Image</string>
     <string name="default_weather">30 ℃ / Sunny</string>
     <string name="default_city">Pune</string>
+    <string name="default_wind">8 km/h</string>
+    <string name="weather_placeholder">Weather : %1$f \u2103 / %2$s</string>
+    <string name="wind_placeholder">Wind : %1$f km/h</string>
+    <string name="rain_precipitation_placeholder">Precipitation : %1$f</string>
 </resources>
