@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.wheatherapp.R
 import com.android.wheatherapp.data.model.WeatherMeta
 import kotlinx.android.synthetic.main.item_forecast.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CityForecastAdapter :
     RecyclerView.Adapter<CityForecastAdapter.CityForecastViewHolder>() {
@@ -34,7 +37,7 @@ class CityForecastAdapter :
 
         fun bind(item: WeatherMeta) = with(itemView) {
 
-            itemView.atv_time.text = item.dt.toString()
+            itemView.atv_time.text = convertLongToTime(item.dt)
 
             itemView.atv_weather.text = context.getString(
                 R.string.weather_placeholder,
@@ -43,6 +46,12 @@ class CityForecastAdapter :
             )
 
             itemView.atv_wind.text = context.getString(R.string.wind_placeholder, item.wind?.speed)
+        }
+
+        private fun convertLongToTime(time: Long): String {
+            val date = Date(time)
+            val format = SimpleDateFormat("dd/MM/yy")
+            return format.format(date)
         }
     }
 }

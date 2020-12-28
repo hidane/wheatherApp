@@ -58,7 +58,7 @@ class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragLis
         setupViewModel()
         setupObserver()
 
-
+        btn_add_city.setOnClickListener(this)
     }
 
     override fun onMarkerDragStart(p0: Marker?) {
