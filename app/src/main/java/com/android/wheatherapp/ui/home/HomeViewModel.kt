@@ -5,30 +5,60 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.wheatherapp.data.api.ApiHelper
-import com.android.wheatherapp.data.model.WeatherMeta
+import com.android.wheatherapp.data.local.DatabaseHelper
+import com.android.wheatherapp.data.local.enitity.BookmarkedCity
 import com.android.wheatherapp.utils.Resource
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val apiHelper: ApiHelper,
+    private val apiHelper: ApiHelper, private val databaseHelper: DatabaseHelper
 ) : ViewModel() {
 
-    private val weatherMeta = MutableLiveData<Resource<WeatherMeta>>()
+    private val bookmarkCities = MutableLiveData<Resource<List<BookmarkedCity>>>()
 
-    fun fetchWeatherMeta(lat: String?, lon: String?, apiKey: String?) {
+    fun addNewCity(lat: String?, lon: String?, apiKey: String?) {
         viewModelScope.launch {
-            weatherMeta.postValue(Resource.loading(null))
+            bookmarkCities.postValue(Resource.loading(null))
             try {
                 val weatherMetaApi = apiHelper.getWeatherMeta(lat, lon, apiKey)
-                weatherMeta.postValue(Resource.success(weatherMetaApi))
+                val bookmarkedCities = mutableListOf<BookmarkedCity>()
+                bookmarkedCities.addAll(databaseHelper.getBookmarkedCities())
+
+                val bookmarkedCity = BookmarkedCity(weatherMetaApi.id,
+                    weatherMetaApi.name,
+                    weatherMetaApi.coord?.lat, weatherMetaApi.coord?.lon,
+                    weatherMetaApi.dt, weatherMetaApi.main?.temp, weatherMetaApi.weather?.get(0)?.description,
+                    weatherMetaApi.weather?.get(0)?.main)
+
+                databaseHelper.insertCity(bookmarkedCity)
+
+                if (!bookmarkedCities.any{ it.id == weatherMetaApi.id }) {
+                    bookmarkedCities.add(bookmarkedCity)
+                }
+
+                bookmarkCities.postValue(Resource.success(bookmarkedCities))
+
             } catch (e: Exception) {
-                weatherMeta.postValue(Resource.error(e.toString(), null))
+                bookmarkCities.postValue(Resource.error(e.toString(), null))
             }
         }
     }
 
-    fun getWeatherMeta(): LiveData<Resource<WeatherMeta>> {
-        return weatherMeta
+    fun fetchBookmarkedCities() {
+        viewModelScope.launch {
+            bookmarkCities.postValue(Resource.loading(null))
+            try {
+
+                bookmarkCities.postValue(Resource.success(databaseHelper.getBookmarkedCities()))
+
+            } catch (e: Exception) {
+                bookmarkCities.postValue(Resource.error(e.toString(), null))
+            }
+        }
+    }
+
+    fun getWeatherMeta(): LiveData<Resource<List<BookmarkedCity>>> {
+        return bookmarkCities
     }
 
 }

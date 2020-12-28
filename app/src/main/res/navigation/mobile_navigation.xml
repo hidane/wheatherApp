@@ -37,8 +37,17 @@
         tools:layout="@layout/fragment_city" />
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.android.wheatherapp.MapsFragment"
-        android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" />
+        android:name="com.android.wheatherapp.ui.map.MapsFragment"
+        android:label="@string/add_city"
+        tools:layout="@layout/fragment_maps">
+
+        <action
+            android:id="@+id/mapToHome"
+            app:destination="@id/navigation_home"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/navigation_home"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
 </navigation>

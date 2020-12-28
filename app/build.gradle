@@ -20,8 +20,6 @@ android {
 
         buildConfigField("String", "WEATHER_KEY", apikeyProperties['WHEATHER_API_KEY'])
 
-        manifestPlaceholders = [ mapsApiKey :  apikeyProperties['MAPS_API_KEY'] ]
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

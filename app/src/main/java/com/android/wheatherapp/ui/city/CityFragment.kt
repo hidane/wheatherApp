@@ -12,6 +12,8 @@ import com.android.wheatherapp.BuildConfig
 import com.android.wheatherapp.R
 import com.android.wheatherapp.data.api.ApiHelperImpl
 import com.android.wheatherapp.data.api.RetrofitBuilder
+import com.android.wheatherapp.data.local.DatabaseBuilder
+import com.android.wheatherapp.data.local.DatabaseHelperImpl
 import com.android.wheatherapp.utils.Status
 import com.android.wheatherapp.utils.ViewModelFactory
 
@@ -38,10 +40,17 @@ class CityFragment : Fragment() {
 
     private fun setupViewModel() {
         cityViewModel = ViewModelProviders.of(
-                this,
-                ViewModelFactory(
-                        ApiHelperImpl(RetrofitBuilder.apiService),
+            this,
+            activity?.applicationContext?.let { DatabaseBuilder.getInstance(it) }?.let {
+                DatabaseHelperImpl(
+                    it
                 )
+            }?.let {
+                ViewModelFactory(
+                    ApiHelperImpl(RetrofitBuilder.apiService),
+                    it
+                )
+            }
         ).get(CityViewModel::class.java)
     }
 
