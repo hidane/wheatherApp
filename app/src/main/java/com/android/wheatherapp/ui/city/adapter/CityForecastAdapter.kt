@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CityForecastAdapter :
+class CityForecastAdapter(val isMetric: Boolean) :
     RecyclerView.Adapter<CityForecastAdapter.CityForecastViewHolder>() {
 
     private var data: List<WeatherMeta> = ArrayList()
@@ -39,13 +39,27 @@ class CityForecastAdapter :
 
             itemView.atv_time.text = convertLongToTime(item.dt)
 
-            itemView.atv_weather.text = context.getString(
-                R.string.weather_placeholder,
-                item.main?.temp,
-                item.weather?.get(0)?.description
-            )
+            if (isMetric) {
 
-            itemView.atv_wind.text = context.getString(R.string.wind_placeholder, item.wind?.speed)
+                itemView.atv_weather.text = context.getString(
+                    R.string.weather_placeholder,
+                    item.main?.temp,
+                    item.weather?.get(0)?.description
+                )
+
+                itemView.atv_wind.text =
+                    context.getString(R.string.wind_placeholder, item.wind?.speed)
+            } else {
+
+                itemView.atv_weather.text = context.getString(
+                    R.string.weather_placeholder_fahrenheit,
+                    item.main?.temp,
+                    item.weather?.get(0)?.description
+                )
+
+                itemView.atv_wind.text =
+                    context.getString(R.string.wind_placeholder_fahrenheit, item.wind?.speed)
+            }
         }
 
         private fun convertLongToTime(time: Long): String {

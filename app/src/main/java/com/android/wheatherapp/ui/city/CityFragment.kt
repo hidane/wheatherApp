@@ -33,6 +33,7 @@ class CityFragment : Fragment() {
     private var cityForecastAdapter: CityForecastAdapter? = null
     private var bookmarkedCity: BookmarkedCity? = null
     private lateinit var unit: String
+    private var isMetric: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +51,8 @@ class CityFragment : Fragment() {
         setupRecycler()
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+
+        isMetric = sharedPreferences.getBoolean("unit", true)
 
         unit = if (sharedPreferences.getBoolean("unit", true)) {
             UnitSystem.METRIC.name
@@ -72,7 +75,7 @@ class CityFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         rv_forecast.layoutManager = layoutManager
 
-        cityForecastAdapter = CityForecastAdapter()
+        cityForecastAdapter = CityForecastAdapter(isMetric)
         rv_forecast.adapter = cityForecastAdapter
     }
 
@@ -85,12 +88,24 @@ class CityFragment : Fragment() {
         }
 
         atv_city.text = weatherForecast?.city?.name
-        atv_weather.text = getString(
-            R.string.weather_placeholder,
-            weatherMeta?.main?.temp,
-            weatherMeta?.weather?.get(0)?.description
-        )
-        atv_wind.text = getString(R.string.wind_placeholder, weatherMeta?.wind?.speed)
+
+        if (isMetric) {
+            atv_weather.text = getString(
+                R.string.weather_placeholder,
+                weatherMeta?.main?.temp,
+                weatherMeta?.weather?.get(0)?.description
+            )
+            atv_wind.text = getString(R.string.wind_placeholder, weatherMeta?.wind?.speed)
+        } else {
+            atv_weather.text = getString(
+                R.string.weather_placeholder_fahrenheit,
+                weatherMeta?.main?.temp,
+                weatherMeta?.weather?.get(0)?.description
+            )
+            atv_wind.text =
+                getString(R.string.wind_placeholder_fahrenheit, weatherMeta?.wind?.speed)
+        }
+
         atv_rain.text =
             getString(R.string.rain_precipitation_placeholder, weatherMeta?.rain?.precipitation)
 

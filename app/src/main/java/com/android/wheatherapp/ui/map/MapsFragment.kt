@@ -31,15 +31,14 @@ import kotlinx.android.synthetic.main.fragment_maps.*
 
 class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragListener {
 
-    val defaultCity = LatLng(18.5538, 73.9477)
-    val marker = MarkerOptions().position(defaultCity).draggable(true).title("Pune")
     private lateinit var viewModel: HomeViewModel
-    private lateinit var latLng: LatLng
+    private var latLng: LatLng = LatLng(18.5538, 73.9477)
     private lateinit var unit: String
+    private val marker = MarkerOptions().position(latLng).draggable(true).title("Pune")
 
     private val callback = OnMapReadyCallback { googleMap ->
         googleMap.addMarker(marker)
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(defaultCity))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(8.0f))
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.setOnMarkerDragListener(this)
