@@ -8,17 +8,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.wheatherapp.R
 import com.android.wheatherapp.data.api.ApiHelperImpl
 import com.android.wheatherapp.data.api.RetrofitBuilder
 import com.android.wheatherapp.data.local.DatabaseBuilder
 import com.android.wheatherapp.data.local.DatabaseHelperImpl
+import com.android.wheatherapp.ui.home.adapter.BookmarkCityAdapter
 import com.android.wheatherapp.utils.Status
+import com.android.wheatherapp.utils.VerticalItemDecoration
 import com.android.wheatherapp.utils.ViewModelFactory
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var viewModel: HomeViewModel
+    private var bookmarkCityAdapter: BookmarkCityAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,13 +39,34 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         setupViewModel()
         setupObserver()
+        setupRecycler()
+        fbAddCity.setOnClickListener(this)
+        viewModel.fetchBookmarkedCities()
+    }
+
+    private fun setupRecycler() {
+        val layoutManager = LinearLayoutManager(context)
+        rvBookmarked.layoutManager = layoutManager
+
+        rvBookmarked.addItemDecoration(VerticalItemDecoration(resources.getDimensionPixelSize(R.dimen.item_spacing)))
+
+        bookmarkCityAdapter = BookmarkCityAdapter()
+        rvBookmarked.adapter = bookmarkCityAdapter
+
+        bookmarkCityAdapter?.onItemClick = {
+            view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.homeToCity) }
+        }
+
+        bookmarkCityAdapter?.onDeleteItemClick = {
+            viewModel.deleteBookmarkedCity(it)
+        }
     }
 
     override fun onClick(p0: View?) {
         when (p0) {
-//            text_home -> {
-//                p0?.let { Navigation.findNavController(it).navigate(R.id.homeToMap) }
-//            }
+            fbAddCity -> {
+                p0?.let { Navigation.findNavController(it).navigate(R.id.homeToMap) }
+            }
         }
     }
 
@@ -64,7 +91,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             viewModel.getWeatherMeta().observe(it, {
                 when (it.status) {
                     Status.SUCCESS -> {
-                        Log.e("Weather Fetched", it.data.toString())
+                        it.data?.let { it1 -> bookmarkCityAdapter?.swapData(it1) }
                     }
                     Status.LOADING -> {
                         Log.e("Weather Fetched", "Service call Loading")

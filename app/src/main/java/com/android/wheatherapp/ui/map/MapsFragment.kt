@@ -24,13 +24,15 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.fragment_maps.*
 
 
-class MapsFragment : Fragment(), GoogleMap.OnMarkerDragListener {
+class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragListener {
 
     val defaultCity = LatLng(18.5538, 73.9477)
     val marker = MarkerOptions().position(defaultCity).draggable(true).title("Pune")
     private lateinit var viewModel: HomeViewModel
+    private lateinit var latLng: LatLng
 
     private val callback = OnMapReadyCallback { googleMap ->
         googleMap.addMarker(marker)
@@ -55,6 +57,8 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerDragListener {
         mapFragment?.getMapAsync(callback)
         setupViewModel()
         setupObserver()
+
+
     }
 
     override fun onMarkerDragStart(p0: Marker?) {
@@ -67,13 +71,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerDragListener {
 
     override fun onMarkerDragEnd(p0: Marker?) {
         p0?.let {
-            val latLng = it.position
-
-            viewModel.addNewCity(
-                latLng.latitude.toString(),
-                latLng.longitude.toString(),
-                BuildConfig.WEATHER_KEY
-            )
+            latLng = it.position
         }
     }
 
@@ -112,6 +110,18 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerDragListener {
                 }
             })
 
+        }
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0) {
+            btn_add_city -> {
+                viewModel.addNewCity(
+                    latLng.latitude.toString(),
+                    latLng.longitude.toString(),
+                    BuildConfig.WEATHER_KEY
+                )
+            }
         }
     }
 }

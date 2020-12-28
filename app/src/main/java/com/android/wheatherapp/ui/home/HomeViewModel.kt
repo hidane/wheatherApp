@@ -57,6 +57,21 @@ class HomeViewModel(
         }
     }
 
+    fun deleteBookmarkedCity(bookmarkedCity: BookmarkedCity) {
+        viewModelScope.launch {
+            bookmarkCities.postValue(Resource.loading(null))
+            try {
+
+                databaseHelper.deleteCity(bookmarkedCity)
+
+                bookmarkCities.postValue(Resource.success(databaseHelper.getBookmarkedCities()))
+
+            } catch (e: Exception) {
+                bookmarkCities.postValue(Resource.error(e.toString(), null))
+            }
+        }
+    }
+
     fun getWeatherMeta(): LiveData<Resource<List<BookmarkedCity>>> {
         return bookmarkCities
     }
