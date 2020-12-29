@@ -101,8 +101,12 @@ class CityFragment : Fragment() {
                     weatherMeta?.wind?.speed?.let { ConversionUtils.kmToMiles(it) })
         }
 
-        atv_rain.text =
-            getString(R.string.rain_precipitation_placeholder, weatherMeta?.rain?.precipitation)
+        if (weatherMeta?.rain?.precipitation == null) {
+            atv_rain.text = getString(R.string.rain_precipitation_placeholder, 0.0)
+        } else {
+            atv_rain.text =
+                getString(R.string.rain_precipitation_placeholder, weatherMeta.rain?.precipitation)
+        }
 
         weatherList?.let {
             cityForecastAdapter?.swapData(it)
@@ -130,6 +134,7 @@ class CityFragment : Fragment() {
             cityViewModel.getWeatherForecast().observe(it, {
                 when (it.status) {
                     Status.SUCCESS -> {
+                        pb_loader.visibility = View.GONE
                         setupCityData(it.data)
                     }
                     Status.LOADING -> {
@@ -137,6 +142,7 @@ class CityFragment : Fragment() {
                     }
                     Status.ERROR -> {
                         //Handle Error
+                        pb_loader.visibility = View.GONE
                         Toast.makeText(activity, it.message.toString(), Toast.LENGTH_LONG).show()
                     }
                 }

@@ -39,23 +39,22 @@ class CityForecastAdapter(val isMetric: Boolean) :
         fun bind(item: WeatherMeta) = with(itemView) {
 
             itemView.atv_time.text = convertLongToTime(item.dt)
+            itemView.atv_weather.text = item.weather?.get(0)?.description
 
             if (isMetric) {
 
-                itemView.atv_weather.text = context.getString(
-                    R.string.weather_placeholder,
-                    item.main?.temp,
-                    item.weather?.get(0)?.description
+                itemView.atv_temp.text = context.getString(
+                    R.string.temp_degress,
+                    item.main?.temp
                 )
 
                 itemView.atv_wind.text =
                     context.getString(R.string.wind_placeholder, item.wind?.speed)
             } else {
 
-                itemView.atv_weather.text = context.getString(
-                    R.string.weather_placeholder_fahrenheit,
-                    item.main?.temp?.let { ConversionUtils.celToFah(it) },
-                    item.weather?.get(0)?.description
+                itemView.atv_temp.text = context.getString(
+                    R.string.temp_fahrenheit,
+                    item.main?.temp?.let { ConversionUtils.celToFah(it) }
                 )
 
                 itemView.atv_wind.text =

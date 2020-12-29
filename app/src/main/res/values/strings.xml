@@ -17,4 +17,6 @@
     <string name="wind_placeholder">Wind : %1$.2f km/h</string>
     <string name="wind_placeholder_fahrenheit">Wind : %1$.2f Miles/h</string>
     <string name="rain_precipitation_placeholder">Precipitation : %1$.2f</string>
+    <string name="temp_degress">%1$.2f \u2103</string>
+    <string name="temp_fahrenheit">%1$.2f \u2109</string>
 </resources>
