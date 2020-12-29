@@ -5,9 +5,9 @@
     android:id="@+id/myCardView"
     android:layout_width="@dimen/card_width"
     android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="@android:color/transparent"
     card_view:cardCornerRadius="@dimen/card_radius"
-    card_view:cardElevation="1dp"
-    card_view:cardBackgroundColor="@android:color/transparent">
+    card_view:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,33 +18,40 @@
             android:id="@+id/atv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            android:text="@string/default_weather"
-            android:textStyle="bold"
             android:textColor="@color/black"
+            android:textStyle="bold"
+            card_view:layout_constraintLeft_toLeftOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/atv_weather"
+            android:id="@+id/atv_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="@dimen/margin_10"
-            android:text="@string/default_weather"
-            android:textStyle="bold"
             android:textColor="@color/black"
+            android:textStyle="bold"
+            card_view:layout_constraintLeft_toLeftOf="parent"
             card_view:layout_constraintTop_toBottomOf="@id/atv_time" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/atv_wind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="@dimen/margin_10"
-            android:text="@string/default_weather"
-            android:textStyle="bold"
             android:textColor="@color/black"
-            card_view:layout_constraintTop_toBottomOf="@id/atv_weather" />
+            android:textStyle="bold"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/atv_temp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/atv_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/atv_wind" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
