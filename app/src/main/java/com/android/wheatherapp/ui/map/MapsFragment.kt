@@ -98,6 +98,7 @@ class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragLis
             viewModel.getWeatherMeta().observe(it, {
                 when (it.status) {
                     Status.SUCCESS -> {
+                        pb_loader.visibility = View.GONE
                         view?.let { it1 ->
                             Navigation.findNavController(it1).navigate(R.id.mapToHome)
                         }
@@ -106,6 +107,7 @@ class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragLis
 
                     }
                     Status.ERROR -> {
+                        pb_loader.visibility = View.GONE
                         //Handle Error
                         Toast.makeText(activity, it.message.toString(), Toast.LENGTH_LONG).show()
                     }
@@ -118,6 +120,7 @@ class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragLis
     override fun onClick(p0: View?) {
         when (p0) {
             btn_add_city -> {
+                pb_loader.visibility = View.VISIBLE
                 viewModel.addNewCity(
                     latLng.latitude.toString(),
                     latLng.longitude.toString(),
