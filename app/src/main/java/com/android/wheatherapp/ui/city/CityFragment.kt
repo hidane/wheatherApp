@@ -20,6 +20,7 @@ import com.android.wheatherapp.data.local.DatabaseHelperImpl
 import com.android.wheatherapp.data.local.enitity.BookmarkedCity
 import com.android.wheatherapp.data.model.WeatherForecast
 import com.android.wheatherapp.ui.city.adapter.CityForecastAdapter
+import com.android.wheatherapp.utils.ConversionUtils
 import com.android.wheatherapp.utils.Status
 import com.android.wheatherapp.utils.UnitSystem
 import com.android.wheatherapp.utils.ViewModelFactory
@@ -32,7 +33,6 @@ class CityFragment : Fragment() {
 
     private var cityForecastAdapter: CityForecastAdapter? = null
     private var bookmarkedCity: BookmarkedCity? = null
-    private lateinit var unit: String
     private var isMetric: Boolean = true
 
     override fun onCreateView(
@@ -54,19 +54,13 @@ class CityFragment : Fragment() {
 
         isMetric = sharedPreferences.getBoolean("unit", true)
 
-        unit = if (sharedPreferences.getBoolean("unit", true)) {
-            UnitSystem.METRIC.name
-        } else {
-            UnitSystem.IMPERIAL.name
-        }
-
         bookmarkedCity = arguments?.getParcelable<BookmarkedCity>("city")
 
         cityViewModel.fetchWeatherForecast(
             bookmarkedCity?.lat.toString(),
             bookmarkedCity?.lon.toString(),
             BuildConfig.WEATHER_KEY,
-            unit
+            UnitSystem.METRIC.name
         )
     }
 
@@ -99,11 +93,12 @@ class CityFragment : Fragment() {
         } else {
             atv_weather.text = getString(
                 R.string.weather_placeholder_fahrenheit,
-                weatherMeta?.main?.temp,
+                weatherMeta?.main?.temp?.let { ConversionUtils.celToFah(it) },
                 weatherMeta?.weather?.get(0)?.description
             )
             atv_wind.text =
-                getString(R.string.wind_placeholder_fahrenheit, weatherMeta?.wind?.speed)
+                getString(R.string.wind_placeholder_fahrenheit,
+                    weatherMeta?.wind?.speed?.let { ConversionUtils.kmToMiles(it) })
         }
 
         atv_rain.text =

@@ -60,14 +60,6 @@ class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragLis
         setupViewModel()
         setupObserver()
 
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-
-        unit = if (sharedPreferences.getBoolean("unit", true)) {
-            UnitSystem.METRIC.name
-        } else {
-            UnitSystem.IMPERIAL.name
-        }
-
         btn_add_city.setOnClickListener(this)
     }
 
@@ -130,7 +122,7 @@ class MapsFragment : Fragment(), View.OnClickListener, GoogleMap.OnMarkerDragLis
                     latLng.latitude.toString(),
                     latLng.longitude.toString(),
                     BuildConfig.WEATHER_KEY,
-                    unit
+                    UnitSystem.METRIC.name
                 )
             }
         }

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.wheatherapp.R
 import com.android.wheatherapp.data.model.WeatherMeta
+import com.android.wheatherapp.utils.ConversionUtils
 import kotlinx.android.synthetic.main.item_forecast.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -53,12 +54,13 @@ class CityForecastAdapter(val isMetric: Boolean) :
 
                 itemView.atv_weather.text = context.getString(
                     R.string.weather_placeholder_fahrenheit,
-                    item.main?.temp,
+                    item.main?.temp?.let { ConversionUtils.celToFah(it) },
                     item.weather?.get(0)?.description
                 )
 
                 itemView.atv_wind.text =
-                    context.getString(R.string.wind_placeholder_fahrenheit, item.wind?.speed)
+                    context.getString(R.string.wind_placeholder_fahrenheit,
+                        item.wind?.speed?.let { ConversionUtils.celToFah(it) })
             }
         }
 
