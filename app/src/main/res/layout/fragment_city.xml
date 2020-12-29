@@ -19,7 +19,6 @@
         android:id="@+id/atv_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/default_city"
         android:textSize="40sp"
         android:textStyle="bold|italic"
         android:padding="@dimen/padding_10"
@@ -31,7 +30,6 @@
         android:id="@+id/atv_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/weather_placeholder"
         android:textStyle="bold"
         android:textSize="25sp"
         android:textColor="@color/black"
@@ -43,7 +41,6 @@
         android:id="@+id/atv_wind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/wind_placeholder"
         android:textSize="30sp"
         android:textStyle="bold"
         android:padding="@dimen/padding_10"
@@ -55,7 +52,6 @@
         android:id="@+id/atv_rain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/rain_precipitation_placeholder"
         android:textSize="30sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -76,5 +72,16 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline" />
+
+    <ProgressBar
+        android:id="@+id/pb_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
