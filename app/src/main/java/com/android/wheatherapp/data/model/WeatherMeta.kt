@@ -21,7 +21,8 @@ data class WeatherMeta(
     var id: Int = 0,
     var name: String? = null,
     var cod: Int = 0,
-    var rain: Rain? = null
+    var rain: Rain? = null,
+    var dt_txt: String? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(Coord::class.java.classLoader),

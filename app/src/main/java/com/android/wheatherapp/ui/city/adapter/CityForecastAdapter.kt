@@ -38,7 +38,7 @@ class CityForecastAdapter(val isMetric: Boolean) :
 
         fun bind(item: WeatherMeta) = with(itemView) {
 
-            itemView.atv_time.text = convertLongToTime(item.dt)
+            itemView.atv_time.text = item.dt_txt
             itemView.atv_weather.text = item.weather?.get(0)?.description
 
             if (isMetric) {
@@ -61,12 +61,6 @@ class CityForecastAdapter(val isMetric: Boolean) :
                     context.getString(R.string.wind_placeholder_fahrenheit,
                         item.wind?.speed?.let { ConversionUtils.celToFah(it) })
             }
-        }
-
-        private fun convertLongToTime(time: Long): String {
-            val date = Date(time)
-            val format = SimpleDateFormat("dd/MM/yy")
-            return format.format(date)
         }
     }
 }
