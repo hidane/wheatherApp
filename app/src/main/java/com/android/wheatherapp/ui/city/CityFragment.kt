@@ -20,11 +20,9 @@ import com.android.wheatherapp.data.local.DatabaseHelperImpl
 import com.android.wheatherapp.data.local.enitity.BookmarkedCity
 import com.android.wheatherapp.data.model.WeatherForecast
 import com.android.wheatherapp.ui.city.adapter.CityForecastAdapter
-import com.android.wheatherapp.utils.ConversionUtils
-import com.android.wheatherapp.utils.Status
-import com.android.wheatherapp.utils.UnitSystem
-import com.android.wheatherapp.utils.ViewModelFactory
+import com.android.wheatherapp.utils.*
 import kotlinx.android.synthetic.main.fragment_city.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class CityFragment : Fragment() {
@@ -68,7 +66,7 @@ class CityFragment : Fragment() {
 
         val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         rv_forecast.layoutManager = layoutManager
-
+        rv_forecast.addItemDecoration(HorizontalItemDecoration(resources.getDimensionPixelSize(R.dimen.item_spacing)))
         cityForecastAdapter = CityForecastAdapter(isMetric)
         rv_forecast.adapter = cityForecastAdapter
     }
